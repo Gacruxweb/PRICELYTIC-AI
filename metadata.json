@@ -1,0 +1,10 @@
+{
+  "name": "PRICELYTIC AI",
+  "description": "Smart price comparison and historical tracking agent with image and voice search capability.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}

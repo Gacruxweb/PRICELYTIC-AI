@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #2563eb;
+  --color-brand-muted: #eff6ff;
+  
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Map variables to tailwind names */
+  --color-app-bg: var(--background);
+  --color-app-fg: var(--foreground);
+  --color-app-surface: var(--surface);
+  --color-app-border: var(--border);
+  --color-app-muted: var(--muted);
+}
+
+/* Base Theme Variables */
+:root {
+  --background: #f8fafc; /* slate-50 */
+  --foreground: #0f172a; /* slate-900 */
+  --surface: #ffffff;
+  --border: #e2e8f0; /* slate-200 */
+  --muted: #64748b; /* slate-500 */
+  color-scheme: light;
+}
+
+/* Dark Theme Variables */
+.dark {
+  --background: #020617; /* slate-950 */
+  --foreground: #f8fafc; /* slate-50 */
+  --surface: #0f172a; /* slate-900 */
+  --border: #1e293b; /* slate-800 */
+  --muted: #94a3b8; /* slate-400 */
+  color-scheme: dark;
+}
+
+body {
+  @apply selection:bg-blue-500 selection:text-white antialiased font-sans transition-colors duration-300;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Map Tailwind utility colors to our variables where needed if possible, 
+   but primarily we rely on Tailwind dark: variants which work with the .dark class */
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-700 rounded-full hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors;
+}
+
+.shadow-soft {
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+

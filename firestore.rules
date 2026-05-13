@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    
+    // System check (for demo purposes, we'll allow a specific UID or just restrict heavily)
+    function isSystem() { return false; } 
+
+    // --- Validation Blueprints ---
+    
+    function isValidProduct(data) {
+      return data.keys().hasAll(['name', 'category', 'imageUrl']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 200 &&
+             data.category is string && data.category.size() <= 50;
+    }
+
+    function isValidOffer(data) {
+      return data.keys().hasAll(['storeName', 'price', 'link']) &&
+             data.storeName is string && data.price is number && data.price > 0 &&
+             data.link is string && data.link.matches('^https?://.*');
+    }
+
+    function isValidWatchedItem(data) {
+      return data.keys().hasAll(['productId', 'createdAt']) &&
+             data.productId is string &&
+             data.createdAt == request.time;
+    }
+
+    // --- Rules ---
+
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update: if isSystem() && isValidProduct(incoming());
+      
+      match /offers/{offerId} {
+        allow read: if true;
+        allow create, update: if isSystem() && isValidOffer(incoming());
+      }
+      
+      match /history/{historyId} {
+        allow read: if true;
+        allow create: if isSystem();
+      }
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      
+      match /watchedItems/{itemId} {
+        allow list: if isOwner(userId);
+        allow get: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidWatchedItem(incoming()) && exists(/databases/$(database)/documents/products/$(incoming().productId));
+        allow delete: if isOwner(userId);
+      }
+
+      match /favorites/{favId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+  }
+}

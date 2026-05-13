@@ -1,0 +1,72 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A searchable product item",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "category": { "type": "string" },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" }
+      },
+      "required": ["name", "category"]
+    },
+    "Offer": {
+      "title": "Offer",
+      "description": "A specific price offer from a store",
+      "type": "object",
+      "properties": {
+        "storeName": { "type": "string" },
+        "price": { "type": "number" },
+        "currency": { "type": "string" },
+        "link": { "type": "string" },
+        "isLocal": { "type": "boolean" },
+        "isInternational": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["storeName", "price", "link"]
+    },
+    "PriceHistory": {
+      "title": "PriceHistory",
+      "description": "Historical price point",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date-time" },
+        "price": { "type": "number" }
+      },
+      "required": ["date", "price"]
+    },
+    "WatchedItem": {
+      "title": "WatchedItem",
+      "description": "A product a user is tracking for price drops",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string" },
+        "targetPrice": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Global product catalog"
+    },
+    "/products/{productId}/offers/{offerId}": {
+      "schema": "Offer",
+      "description": "Real-time offers for a product"
+    },
+    "/products/{productId}/history/{historyId}": {
+      "schema": "PriceHistory",
+      "description": "Price history for trend analysis"
+    },
+    "/users/{userId}/watchedItems/{itemId}": {
+      "schema": "WatchedItem",
+      "description": "User specific price drop alerts"
+    }
+  }
+}
