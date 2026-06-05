@@ -12,10 +12,6 @@ Pricelytic AI is a professional-grade price comparison and market analysis dashb
 *   **Dual-Aesthetic UI:** Polished high-contrast Light Mode and a deep-space Dark Mode with professional typography and centered container layout.
 *   **Data Analysis:** One-click CSV export for offline price analysis and competitor comparison.
 
-## Getting Started
-
-View your app in AI Studio: [https://ai.studio/apps/dac578e3-c7f7-4279-8da5-d1769c366c20](https://ai.studio/apps/dac578e3-c7f7-4279-8da5-d1769c366c20)
-
 ### Run Locally
 
 **Prerequisites:**  Node.js
